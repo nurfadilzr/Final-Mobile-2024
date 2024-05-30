@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:id="@+id/homeFragment"
+    android:background="@color/white"
+    tools:context=".fragment.HomeFragment">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp">
+
+        <TextView
+            android:id="@+id/tv_halo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Halo, "
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:textColor="@color/hijau1"/>
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/searchView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_halo"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="20dp"
+            app:queryHint="Search Product..."
+            android:background="@drawable/searchview_bg"
+            android:iconifiedByDefault="false" />
+
+        <TextView
+            android:id="@+id/tv_no_data"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="No data"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:layout_marginTop="100dp"
+            android:visibility="gone"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_searchProducts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            tools:itemCount="3"
+            app:spanCount="1"
+            tools:listitem="@layout/product"
+            android:layout_centerVertical="true"
+            android:visibility="gone" >
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp"
+        android:layout_marginHorizontal="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Products"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="@color/hijau1" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_products"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="2"
+            tools:itemCount="6"
+            tools:listitem="@layout/product"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:paddingBottom="60dp"/>
+
+    </LinearLayout>
+
+</LinearLayout>
