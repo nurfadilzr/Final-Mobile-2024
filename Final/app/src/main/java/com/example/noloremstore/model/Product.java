@@ -7,16 +7,16 @@ public class Product {
     private String price;
     private String category;
     private String image;
-    private String rate;
+//    private double rating;
 
-    public Product(int id, String title, String description, String price, String category, String image, String rate) {
+    public Product(int id, String title, String description, String price, String category, String image, double rating) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.price = price;
         this.category = category;
         this.image = image;
-        this.rate = rate;
+//        this.rating = rating;
     }
 
     public int getId() {
@@ -67,12 +67,12 @@ public class Product {
         this.image = image;
     }
 
-    public String getRate() {
-        return rate;
-    }
-
-    public void setRate(String rate) {
-        this.rate = rate;
-    }
+//    public double getRating() {
+//        return rating;
+//    }
+//
+//    public void setRating(double rating) {
+//        this.rating = rating;
+//    }
     // constructor, settergetter
 }

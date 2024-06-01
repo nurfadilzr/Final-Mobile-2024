@@ -82,6 +82,7 @@ public class LoginActivity extends AppCompatActivity {
                     Log.d("LoginActivity", "Token: " + token);
 
                     saveToken(token);
+                    saveUsername(username);
                     navigateToHome();
                 } else {
                     Toast.makeText(LoginActivity.this, "Invalid username or password", Toast.LENGTH_SHORT).show();
@@ -96,11 +97,21 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void saveToken(String token) {
-        SharedPreferences sharedPreferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
+        SharedPreferences sharedUserLogin = getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedUserLogin.edit();
         editor.putString("token", token);
         editor.apply();
     }
+
+    private void saveUsername(String username){
+        SharedPreferences sharedUsername = getSharedPreferences("username_pref", MODE_PRIVATE);
+        username = et_username.getText().toString().trim();
+        SharedPreferences.Editor editor = sharedUsername.edit();
+        editor.putString("username", username);
+        editor.apply();
+    }
+
+
 
     private void navigateToHome() {
         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);

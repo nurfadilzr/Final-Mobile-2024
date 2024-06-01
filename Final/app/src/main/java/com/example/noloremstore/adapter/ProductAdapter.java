@@ -2,6 +2,7 @@ package com.example.noloremstore.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,7 +49,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     public void onBindViewHolder(@NonNull ProductAdapter.ProductViewHolder holder, int position) {
         Product product = productList.get(position);
         holder.title.setText(product.getTitle());
+        holder.title.setEllipsize(TextUtils.TruncateAt.END);
+        holder.title.setSingleLine(true);
+
         holder.price.setText("$" + product.getPrice());
+//        holder.rating.setText((int) product.getRating());
         Picasso.get()
                 .load(product.getImage()) // URL atau sumber gambar
                 .into(holder.image); // ImageView target
@@ -109,12 +114,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
     public class ProductViewHolder extends RecyclerView.ViewHolder {
         ImageView image;
-        TextView title, price;
+        TextView title, price, rating;
         public ProductViewHolder(@NonNull View itemView) {
             super(itemView);
             image = itemView.findViewById(R.id.iv_productImage);
             title = itemView.findViewById(R.id.tv_productName);
             price = itemView.findViewById(R.id.tv_productPrice);
+//            rating = itemView.findViewById(R.id.tv_productRate);
         }
     }
 }

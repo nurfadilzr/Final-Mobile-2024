@@ -7,7 +7,9 @@ public class User {
     private String email;
     private String username;
     private String password;
-    private String name; // firstname + lastnama
+    private String firstname;
+    private String lastname;
+//    private String name; // firstname + lastnama
     private String phone;
 //    "address": {
 //        "geolocation": {
@@ -23,6 +25,23 @@ public class User {
     public User(String username, String password){
         this.username = username;
         this.password = password;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "User{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getEmail() {
@@ -49,12 +68,27 @@ public class User {
         this.password = password;
     }
 
-    @NonNull
-    @Override
-    public String toString() {
-        return "User{" +
-                "username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 }

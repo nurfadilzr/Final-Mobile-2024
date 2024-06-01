@@ -3,6 +3,7 @@ package com.example.noloremstore.api;
 import com.example.noloremstore.model.Cart;
 import com.example.noloremstore.model.Product;
 import com.example.noloremstore.model.User;
+import com.example.noloremstore.response.CartResponse;
 import com.example.noloremstore.response.TokenResponse;
 
 import java.util.List;
@@ -42,14 +43,14 @@ public interface ApiService {
 //    Call<List<Category>> getAllCategories();
     Call<List<String>> getAllCategories();
 
-    @GET("products/category/{category}")
-    Call<List<Product>> getProductCategory();
+//    @GET("products/category/{category}")
+//    Call<List<Product>> getProductCategory();
 
     @GET("carts/user/{id}")
-    Call<Cart> getUserCart();
+    Call<List<Cart>> getUserCart(@Path("id") int id);
 
-    @GET("user/{id}")
-    Call<User> getUserData();
+    @GET("users/{id}")
+    Call<User> getUserData(@Path("id") int id);
 
     @GET("auth/login")
     Call<User> getUserLogin();
