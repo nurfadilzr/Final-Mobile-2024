@@ -7,15 +7,20 @@ public class Product {
     private String price;
     private String category;
     private String image;
+    private int quantity;
 //    private double rating;
 
-    public Product(int id, String title, String description, String price, String category, String image, double rating) {
+    public Product(){
+
+    }
+    public Product(int id, String title, String description, String price, String category, String image, int quantity) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.price = price;
         this.category = category;
         this.image = image;
+        this.quantity = quantity;
 //        this.rating = rating;
     }
 
@@ -43,8 +48,8 @@ public class Product {
         this.description = description;
     }
 
-    public String getPrice() {
-        return price;
+    public double getPrice() {
+        return Double.parseDouble(price);
     }
 
     public void setPrice(String price) {
@@ -65,6 +70,14 @@ public class Product {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
 //    public double getRating() {

@@ -68,7 +68,6 @@ public class HomeFragment extends Fragment {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 productAdapter.filter(query);
-//                fetchProductsByQuery(query);
                 // Disini bisa dilakukan proses ketika pengguna menekan tombol submit pada keyboard setelah memasukkan query
                 return false;
             }
@@ -77,7 +76,6 @@ public class HomeFragment extends Fragment {
             public boolean onQueryTextChange(String newText) {
                 // Disini dilakukan proses pemfilteran berdasarkan teks yang diinputkan oleh pengguna
                 productAdapter.filter(newText);
-//                productAdapter.getFilter().filter(newText);
                 return true;
             }
         });
@@ -93,51 +91,51 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
-    private void fetchUserProfile() {
-        SharedPreferences sharedUserLogin = getActivity().getSharedPreferences("user_prefs", getContext().MODE_PRIVATE);
-        SharedPreferences sharedUsername = getActivity().getSharedPreferences("username_pref", getContext().MODE_PRIVATE);
-        String token = sharedUserLogin.getString("token", null);
-        if (token != null) {
-            int userId = getUserIdFromToken(token);
-            if (userId != -1) {
-                ApiService service = RetrofitClient.getClient().create(ApiService.class);
-                Call<User> call = service.getUserData(userId);
-                call.enqueue(new Callback<User>() {
-                    @Override
-                    public void onResponse(Call<User> call, Response<User> response) {
-                        if (response.isSuccessful() && response.body() != null) {
-                            User user = response.body();
-                            Log.d("username", user.getUsername());
-                            tv_halo.setText("Halo, " + user.getUsername() + "!");
-                        } else {
-                            Log.e("ProfileFragment", "Response not successful: " + response.code());
-                            Toast.makeText(getContext(), "Failed to fetch user data", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<User> call, Throwable t) {
-                        Log.e("ProfileFragment", "API call failed", t);
-                        Toast.makeText(getContext(), "Failed to fetch user data", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-        } else {
-            Toast.makeText(getContext(), "Token not found", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private int getUserIdFromToken(String token) {
-        try {
-            String[] split = token.split("\\.");
-            String payload = new String(Base64.decode(split[1], Base64.URL_SAFE));
-            JSONObject jsonObject = new JSONObject(payload);
-            return jsonObject.getInt("userId");
-        } catch (JSONException | ArrayIndexOutOfBoundsException e) {
-            e.printStackTrace();
-            return -1;
-        }
-    }
+//    private void fetchUserProfile() {
+//        SharedPreferences sharedUserLogin = getActivity().getSharedPreferences("user_prefs", getContext().MODE_PRIVATE);
+//        SharedPreferences sharedUsername = getActivity().getSharedPreferences("username_pref", getContext().MODE_PRIVATE);
+//        String token = sharedUserLogin.getString("token", null);
+//        if (token != null) {
+//            int userId = getUserIdFromToken(token);
+//            if (userId != -1) {
+//                ApiService service = RetrofitClient.getClient().create(ApiService.class);
+//                Call<User> call = service.getUserData(userId);
+//                call.enqueue(new Callback<User>() {
+//                    @Override
+//                    public void onResponse(Call<User> call, Response<User> response) {
+//                        if (response.isSuccessful() && response.body() != null) {
+//                            User user = response.body();
+//                            Log.d("username", user.getUsername());
+//                            tv_halo.setText("Halo, " + user.getUsername() + "!");
+//                        } else {
+//                            Log.e("ProfileFragment", "Response not successful: " + response.code());
+//                            Toast.makeText(getContext(), "Failed to fetch user data", Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<User> call, Throwable t) {
+//                        Log.e("ProfileFragment", "API call failed", t);
+//                        Toast.makeText(getContext(), "Failed to fetch user data", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+//            }
+//        } else {
+//            Toast.makeText(getContext(), "Token not found", Toast.LENGTH_SHORT).show();
+//        }
+//    }
+//
+//    private int getUserIdFromToken(String token) {
+//        try {
+//            String[] split = token.split("\\.");
+//            String payload = new String(Base64.decode(split[1], Base64.URL_SAFE));
+//            JSONObject jsonObject = new JSONObject(payload);
+//            return jsonObject.getInt("userId");
+//        } catch (JSONException | ArrayIndexOutOfBoundsException e) {
+//            e.printStackTrace();
+//            return -1;
+//        }
+//    }
 
 //    private void fetchUserProfile() {
 //        ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
@@ -197,28 +195,4 @@ public class HomeFragment extends Fragment {
             }
         });
     }
-
-//    private void fetchProductsByQuery(String query) {
-//        ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
-//        Call<List<Product>> call = apiService.getProductsByQuery(query);
-//        call.enqueue(new Callback<List<Product>>() {
-//            @Override
-//            public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
-//                if (response.isSuccessful() && response.body() != null) {
-//                    List<Product> productList = response.body();
-//                    productAdapter.updateProductList(productList);
-//                    rv_searchProducts.setVisibility(View.VISIBLE);
-//                } else {
-//                    Toast.makeText(getContext(), "Failed to retrieve products", Toast.LENGTH_SHORT).show();
-//                    Log.e("HomeFragment", "Response not successful: " + response.code() + " - " + response.message());
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<List<Product>> call, Throwable t) {
-//                Toast.makeText(getContext(), "An error occurred: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-//                Log.e("HomeFragment", "API call failed", t);
-//            }
-//        });
-//    }
 }

@@ -27,23 +27,18 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-                    SharedPreferences sharedPreferences = getSharedPreferences("MyApp", MODE_PRIVATE);
+                    SharedPreferences sharedPreferences = getSharedPreferences("LoginPrefs", MODE_PRIVATE);
                     boolean isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false);
 
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (isLoggedIn) {
-                                Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-                                startActivity(intent);
-                            } else {
-                                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                                startActivity(intent);
-                            }
-                            progressBar.setVisibility(View.GONE); // Hide ProgressBar
-                            finish();
-                        }
-                    });
+                    if (isLoggedIn) {
+                        Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+                        startActivity(intent);
+                    } else {
+                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                    }
+                    progressBar.setVisibility(View.GONE); // Hide ProgressBar
+                    finish();
                 } catch (Exception e) {
                     e.printStackTrace();
                     runOnUiThread(new Runnable() {
@@ -56,24 +51,5 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }, 2000); // Delay 2 detik
-
-
-//        new Handler().postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                SharedPreferences sharedPreferences = getSharedPreferences("MyApp", MODE_PRIVATE);
-//                boolean isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false);
-//
-//                if (isLoggedIn) {
-//                    Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-//                    startActivity(intent);
-//                } else {
-//                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-//                    startActivity(intent);
-//                }
-//                progressBar.setVisibility(View.GONE); // Hide ProgressBar
-//                finish();
-//            }
-//        }, 2000); // Delay 2 detik
     }
 }

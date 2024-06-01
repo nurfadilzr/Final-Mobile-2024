@@ -1,16 +1,13 @@
 package com.example.noloremstore.model;
 
-import java.util.List;
-
 public class Cart {
     private int id;
     private String title;
-    private String price;
+    private double price;
     private int quantity;
     private String image;
 
-
-    public Cart(int id, String title, String price, int quantity, String image) {
+    public Cart() {
         this.id = id;
         this.title = title;
         this.price = price;
@@ -34,11 +31,11 @@ public class Cart {
         this.title = title;
     }
 
-    public String getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 

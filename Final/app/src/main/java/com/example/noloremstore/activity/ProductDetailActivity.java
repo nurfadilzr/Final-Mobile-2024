@@ -1,17 +1,29 @@
 package com.example.noloremstore.activity;
 
+import static android.content.ContentValues.TAG;
+import static java.security.AccessController.getContext;
+
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.noloremstore.api.ApiService;
 import com.example.noloremstore.api.RetrofitClient;
+import com.example.noloremstore.database.DBConfig;
+import com.example.noloremstore.fragment.HomeFragment;
+import com.example.noloremstore.model.Cart;
+import com.example.noloremstore.model.Product;
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.core.view.WindowCompat;
 import androidx.navigation.NavController;
@@ -22,61 +34,161 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.noloremstore.databinding.ActivityProductDetailBinding;
 
 import com.example.noloremstore.R;
+import com.squareup.picasso.Picasso;
+
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ProductDetailActivity extends AppCompatActivity {
 
+    private int product_id;
+    private int quantity = 1;
+    private Product product;
+    private DBConfig dbConfig;
+    private Button btn_add_to_cart, btn_decrease, btn_increase;
     private ImageView iv_productImage, btn_back;
-    private TextView tv_productName, tv_productPrice, tv_productCategory, tv_productRating, tv_productDescription;
+    private TextView tv_productName, tv_productPrice, tv_productCategory, tv_productDescription, tv_quantity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_detail);
 
+        dbConfig = new DBConfig(this);
         btn_back = findViewById(R.id.btn_back);
+        btn_add_to_cart = findViewById(R.id.btn_add_to_cart);
+        btn_decrease = findViewById(R.id.btn_decrease_quantity);
+        btn_increase = findViewById(R.id.btn_increase_quantity);
         iv_productImage = findViewById(R.id.iv_productImage);
         tv_productName = findViewById(R.id.tv_productName);
         tv_productPrice = findViewById(R.id.tv_productPrice);
         tv_productCategory = findViewById(R.id.tv_productCategory);
-        tv_productRating = findViewById(R.id.tv_productRating);
         tv_productDescription = findViewById(R.id.tv_productDescription);
+        tv_quantity = findViewById(R.id.tv_quantity);
 
-        // Assume that you pass product data through Intent
-        String productId = getIntent().getStringExtra("product_id");
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+        btn_decrease.setOnClickListener(v -> {
+            if (quantity > 1) {
+                quantity--;
+                tv_quantity.setText(String.valueOf(quantity));
+            }
+        });
+        btn_increase.setOnClickListener(v -> {
+            quantity++;
+            tv_quantity.setText(String.valueOf(quantity));
+        });
 
-        // Fetch product data from API
-        fetchProductDetails(productId);
+        btn_add_to_cart.setOnClickListener(v -> {
+            // Implementasikan logika untuk menambahkan produk ke keranjang belanja
+            // dengan quantity yang dipilih
+            addToCart();
+        });
 
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra("product_id")) {
+//            Log.d("ProductDetailActivity", "onCreate: product id" + product_id);
+            product_id = intent.getIntExtra("product_id", -1);
+            fetchProductDetails(product_id);
+        }
     }
 
-    private void fetchProductDetails(String productId) {
-        // Use Retrofit or any other networking library to fetch product details from API
-        // Here is an example using pseudo code
+    private void fetchProductDetails(int productId) {
         ApiService service = RetrofitClient.getClient().create(ApiService.class);
-//        Call<Product> call = service.getProductDetails(productId);
-//        call.enqueue(new Callback<Product>() {
+        Call<Product> call = service.getProductDetails(productId);
+        call.enqueue(new Callback<Product>() {
+            @Override
+            public void onResponse(Call<Product> call, Response<Product> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    product = response.body();
+                    updateUI(product);
+                } else {
+                    Log.e("ProductDetailActivity", "Failed to fetch product data: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Product> call, Throwable t) {
+//                Toast.makeText(getContext(), "An error occurred: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e("HomeFragment", "API call failed", t);
+            }
+        });
+    }
+
+    private void updateUI(Product product) {
+        tv_productName.setText(product.getTitle());
+        tv_productPrice.setText("Price: " + product.getPrice());
+        tv_productCategory.setText("Category: " + product.getCategory());
+        tv_productDescription.setText("Description: \n" + product.getDescription());
+        Picasso.get().load(product.getImage()).into(iv_productImage);
+        // Simpan URL gambar
+//        Picasso.get().load(productImageUrl).into(iv_productImage);
+    }
+
+//    private void fetchDetailProduct() {
+//        // Panggil API FakeStoreAPI untuk mendapatkan daftar kategori
+//        // Implementasi panggilan API menggunakan Retrofit atau metode lainnya
+//        ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
+//        Call<Product> call = apiService.getProductDetails(product_id);
+//        call.enqueue(new Callback<List<String>>() {
+//
 //            @Override
-//            public void onResponse(Call<Product> call, Response<Product> response) {
+//            public void onResponse(Call<List<String>> call, Response<List<String>> response) {
 //                if (response.isSuccessful() && response.body() != null) {
-//                    Product product = response.body();
-//                    updateUI(product);
+//                    Product product = (Product) response.body();
+//                    categoryList.addAll(categories);
+//                    categoryAdapter.notifyDataSetChanged();
+//                } else {
+//                    Toast.makeText(getContext(), "Failed to fetch categories: " + response.message(), Toast.LENGTH_SHORT).show();
 //                }
 //            }
 //
 //            @Override
-//            public void onFailure(Call<Product> call, Throwable t) {
-//                // Handle failure
+//            public void onFailure(Call<List<String>> call, Throwable t) {
+//                Toast.makeText(getContext(), "An error occurred: " + t.getMessage(), Toast.LENGTH_SHORT).show();
 //            }
 //        });
+//    }
+//    private void addToCart() {
+////        String productName = tv_productName.getText().toString();
+////        double productPrice = Double.parseDouble(tv_productPrice.getText().toString().replace("Price: ", ""));
+////        String productImageUrl = product.getImage();
+//
+//        boolean isAdded = dbConfig.addToCart(product.getId(), product.getImage(), product.getTitle(), product.getPrice(), product.getQuantity());
+//
+//        if (isAdded) {
+//            showAlertDialog("Success", "Product added to cart successfully");
+//        } else {
+//            showAlertDialog("Error", "Failed to add product to cart");
+//        }
+//    }
+    private void addToCart() {
+        if (product != null) {
+            Log.d("ProductDetailActivity", "Adding to cart: " + product.toString());
+            boolean isAdded = dbConfig.addToCart(product.getId(), product.getImage(), product.getTitle(), product.getPrice(), 1);
+
+            if (isAdded) {
+                showAlertDialog("Success", "Product added to cart successfully");
+            } else {
+                showAlertDialog("Error", "Failed to add product to cart");
+            }
+        } else {
+            Log.e("ProductDetailActivity", "Product is null, cannot add to cart");
+        }
     }
 
-//    private void updateUI(Product product) {
-//        tvProductName.setText(product.getName());
-//        tvProductPrice.setText("Price: " + product.getPrice());
-//        tvProductCategory.setText("Category: " + product.getCategory());
-//        tvProductRating.setText("Rating: " + product.getRating());
-//        tvProductDescription.setText(product.getDescription());
-//
-//        Picasso.get().load(product.getImageUrl()).into(ivProductImage);
-//    }
+    private void showAlertDialog(String title, String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(title)
+                .setMessage(message)
+                .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
+                .show();
+    }
 }

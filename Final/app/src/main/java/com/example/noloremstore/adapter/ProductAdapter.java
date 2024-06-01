@@ -2,6 +2,7 @@ package com.example.noloremstore.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.noloremstore.R;
+import com.example.noloremstore.activity.ProductDetailActivity;
 import com.example.noloremstore.model.Product;
 import com.squareup.picasso.Picasso;
 
@@ -53,10 +55,16 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         holder.title.setSingleLine(true);
 
         holder.price.setText("$" + product.getPrice());
-//        holder.rating.setText((int) product.getRating());
         Picasso.get()
                 .load(product.getImage()) // URL atau sumber gambar
                 .into(holder.image); // ImageView target
+
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, ProductDetailActivity.class);
+            intent.putExtra("product_id", product.getId());
+            context.startActivity(intent);
+
+        });
     }
 
     @Override
@@ -114,13 +122,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
     public class ProductViewHolder extends RecyclerView.ViewHolder {
         ImageView image;
-        TextView title, price, rating;
+        TextView title, price;
         public ProductViewHolder(@NonNull View itemView) {
             super(itemView);
             image = itemView.findViewById(R.id.iv_productImage);
             title = itemView.findViewById(R.id.tv_productName);
             price = itemView.findViewById(R.id.tv_productPrice);
-//            rating = itemView.findViewById(R.id.tv_productRate);
         }
     }
 }

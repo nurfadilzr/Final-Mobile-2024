@@ -23,14 +23,9 @@ public interface ApiService {
     @POST("auth/login")
     Call<TokenResponse> login(@Body User user);
 
-//    @GET("products")
-//    Call<ProductResponse> getAllProducts();
-
     @GET("products")
     Call<List<Product>> getAllProducts();
 
-//    @GET("products/category/{category}")
-//    Call<List<Product>> getProductsByCategory(String category);
 
     @GET("products/category/{category}")
     Call<List<Product>> getProductsByCategory(@Path("category") String category);
@@ -43,16 +38,8 @@ public interface ApiService {
 //    Call<List<Category>> getAllCategories();
     Call<List<String>> getAllCategories();
 
-//    @GET("products/category/{category}")
-//    Call<List<Product>> getProductCategory();
-
-    @GET("carts/user/{id}")
-    Call<List<Cart>> getUserCart(@Path("id") int id);
 
     @GET("users/{id}")
     Call<User> getUserData(@Path("id") int id);
-
-    @GET("auth/login")
-    Call<User> getUserLogin();
 
 }

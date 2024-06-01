@@ -81,6 +81,12 @@ public class LoginActivity extends AppCompatActivity {
                     Log.d("LoginActivity", "Response body: " + response.body());
                     Log.d("LoginActivity", "Token: " + token);
 
+                    // Misalnya, setelah verifikasi kredensial pengguna dan login berhasil:
+//                    SharedPreferences sharedPreferences = getSharedPreferences("LoginPrefs", MODE_PRIVATE);
+//                    SharedPreferences.Editor editor = sharedPreferences.edit();
+//                    editor.putBoolean("isLoggedIn", true);
+//                    editor.apply(); // Terapkan perubahan
+
                     saveToken(token);
                     saveUsername(username);
                     navigateToHome();
@@ -94,6 +100,8 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(LoginActivity.this, "An error occurred: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+
+
     }
 
     private void saveToken(String token) {

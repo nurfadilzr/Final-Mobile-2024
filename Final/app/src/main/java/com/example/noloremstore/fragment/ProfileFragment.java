@@ -1,5 +1,7 @@
 package com.example.noloremstore.fragment;
 
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -10,10 +12,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.noloremstore.R;
+import com.example.noloremstore.activity.LoginActivity;
 import com.example.noloremstore.api.ApiService;
 import com.example.noloremstore.api.RetrofitClient;
 import com.example.noloremstore.model.User;
@@ -27,23 +31,47 @@ import retrofit2.Response;
 
 public class ProfileFragment extends Fragment {
 
-    private TextView tvEmail, tvUsername, tvPassword, tvFirstname, tvLastname, tvAddress, tvPhone;
+    private ImageView btn_logout;
+    private TextView tvEmail, tvUsername, tvPassword, tvFullName, tvAddress, tvPhone;
+    private Context context;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
+        btn_logout = view.findViewById(R.id.btn_logout);
         tvEmail = view.findViewById(R.id.tv_email);
         tvUsername = view.findViewById(R.id.tv_username);
         tvPassword = view.findViewById(R.id.tv_password);
-        tvFirstname = view.findViewById(R.id.tv_firstname);
-        tvLastname = view.findViewById(R.id.tv_lastname);
+        tvFullName = view.findViewById(R.id.tv_full_name);
         tvAddress = view.findViewById(R.id.tv_address);
         tvPhone = view.findViewById(R.id.tv_phone);
 
         // Fetch user data from API
         fetchUserProfile();
+
+        btn_logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Hapus data pengguna dari SharedPreferences
+                SharedPreferences sharedPreferences = getActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.clear(); // atau editor.remove("token") jika hanya ingin menghapus token
+                editor.apply();
+                // Misalnya, saat pengguna logout:
+//                SharedPreferences sharedPreferences = getSharedPreferences("LoginPrefs", MODE_PRIVATE);
+//                SharedPreferences.Editor editor = sharedPreferences.edit();
+//                editor.putBoolean("isLoggedIn", false);
+//                editor.apply(); // Terapkan perubahan
+
+
+                // Navigasi ke halaman login dengan flag untuk menghapus stack aktivitas
+                Intent intent = new Intent(getContext(), LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
+        });
 
         return view;
     }
@@ -101,11 +129,9 @@ public class ProfileFragment extends Fragment {
     private void updateUI(User user) {
         tvEmail.setText(user.getEmail());
         tvUsername.setText(user.getUsername());
-        tvPassword.setText(user.getPassword()); // Assuming password is already hashed
-        tvFirstname.setText(user.getFirstname());
-        tvLastname.setText(user.getLastname());
-//        tvAddress.setText(user.getAddress());
+        tvPassword.setText(user.getPassword());
+        tvFullName.setText(user.getName().getFirstname() + user.getName().getLastname());
+        tvAddress.setText(user.getAddress().getStreet() + ", " + user.getAddress().getNumber() + ", " + user.getAddress().getCity() + ", " + user.getAddress().getZipcode());
         tvPhone.setText(user.getPhone());
-
     }
 }

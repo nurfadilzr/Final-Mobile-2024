@@ -7,34 +7,84 @@ public class User {
     private String email;
     private String username;
     private String password;
-    private String firstname;
-    private String lastname;
+//    private String firstname;
+//    private String lastname;
 //    private String name; // firstname + lastnama
+    private Name name;
+    private Address address;
     private String phone;
-//    "address": {
-//        "geolocation": {
-//            "lat": "-37.3159",
-//                    "long": "81.1496"
-//        },
-//        "city": "kilcoole",
-//                "street": "new road",
-//                "number": 7682,
-//                "zipcode": "12926-3874"
-//    }
 
     public User(String username, String password){
         this.username = username;
         this.password = password;
     }
 
-    @NonNull
-    @Override
-    public String toString() {
-        return "User{" +
-                "username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+    public Name getName() {
+        return name;
     }
+
+    public void setName(Name name) {
+        this.name = name;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public static class Name {
+        private String firstname;
+        private String lastname;
+
+        public String getFirstname() {
+            return firstname;
+        }
+        public void setFirstname(String firstname) {
+            this.firstname = firstname;
+        }
+        public String getLastname() {
+            return lastname;
+        }
+        public void setLastname(String lastname) {
+            this.lastname = lastname;
+        }
+    }
+
+    public static class Address {
+        private String city;
+        private String street;
+        private int number;
+        private String zipcode;
+
+        public String getCity() {
+            return city;
+        }
+        public void setCity(String city) {
+            this.city = city;
+        }
+        public String getStreet() {
+            return street;
+        }
+        public void setStreet(String street) {
+            this.street = street;
+        }
+        public int getNumber() {
+            return number;
+        }
+        public void setNumber(int number) {
+            this.number = number;
+        }
+        public String getZipcode() {
+            return zipcode;
+        }
+        public void setZipcode(String zipcode) {
+            this.zipcode = zipcode;
+        }
+    }
+
 
     public int getId() {
         return id;
@@ -74,21 +124,5 @@ public class User {
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    public String getFirstname() {
-        return firstname;
-    }
-
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
-    }
-
-    public String getLastname() {
-        return lastname;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
     }
 }
