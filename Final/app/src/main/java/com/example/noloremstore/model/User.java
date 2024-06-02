@@ -7,9 +7,6 @@ public class User {
     private String email;
     private String username;
     private String password;
-//    private String firstname;
-//    private String lastname;
-//    private String name; // firstname + lastnama
     private Name name;
     private Address address;
     private String phone;

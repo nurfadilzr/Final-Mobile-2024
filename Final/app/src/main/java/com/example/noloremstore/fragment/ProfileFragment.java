@@ -54,19 +54,11 @@ public class ProfileFragment extends Fragment {
         btn_logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Hapus data pengguna dari SharedPreferences
                 SharedPreferences sharedPreferences = getActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.clear(); // atau editor.remove("token") jika hanya ingin menghapus token
                 editor.apply();
-                // Misalnya, saat pengguna logout:
-//                SharedPreferences sharedPreferences = getSharedPreferences("LoginPrefs", MODE_PRIVATE);
-//                SharedPreferences.Editor editor = sharedPreferences.edit();
-//                editor.putBoolean("isLoggedIn", false);
-//                editor.apply(); // Terapkan perubahan
 
-
-                // Navigasi ke halaman login dengan flag untuk menghapus stack aktivitas
                 Intent intent = new Intent(getContext(), LoginActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);

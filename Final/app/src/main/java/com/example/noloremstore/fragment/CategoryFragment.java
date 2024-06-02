@@ -1,30 +1,22 @@
 package com.example.noloremstore.fragment;
 
-import static android.content.Intent.getIntent;
-
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.noloremstore.R;
-import com.example.noloremstore.activity.ProductDetailActivity;
 import com.example.noloremstore.adapter.CategoryAdapter;
-import com.example.noloremstore.adapter.ProductAdapter;
 import com.example.noloremstore.adapter.ProductsByCategoryAdapter;
 import com.example.noloremstore.api.ApiService;
 import com.example.noloremstore.api.RetrofitClient;
-import com.example.noloremstore.model.Category;
 import com.example.noloremstore.model.Product;
 
 import java.util.ArrayList;
@@ -60,7 +52,6 @@ public class CategoryFragment extends Fragment {
         rv_productsCategory.setAdapter(productsByCategoryAdapter);
         rv_productsCategory.setLayoutManager(new GridLayoutManager(getContext(), 2));
         rv_productsCategory.setVisibility(View.GONE);
-
 
         fetchCategories();
 

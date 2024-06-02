@@ -25,7 +25,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         this.context = context;
     }
 
-
     @NonNull
     @Override
     public CartAdapter.CartViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -48,15 +47,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
     public int getItemCount() {
         return cartList.size();
     }
-
-//    private Product getProductById(int productId) {
-//        for (Product product : productList) {
-//            if (product.getId() == productId) {
-//                return product;
-//            }
-//        }
-//        return null;
-//    }
 
     public class CartViewHolder extends RecyclerView.ViewHolder {
 

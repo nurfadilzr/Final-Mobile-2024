@@ -25,14 +25,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
     private List<Product> productList;
     private List<Product> originalproductList;
-    private List<Product> productListFiltered; // Daftar produk yang telah difilter
     private Context context;
-
-//    public ProductAdapter(List<Product> productList) {
-//        this.productList = productList;
-//        this.productListFiltered = productListFiltered;
-//        this.context = context;
-//    }
 
     public ProductAdapter(List<Product> productList, Context context) {
         this.productList = productList;
@@ -88,37 +81,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         notifyDataSetChanged();
     }
 
-//    @Override
-//    public Filter getFilter() {
-//        return new Filter() {
-//            @Override
-//            protected FilterResults performFiltering(CharSequence constraint) {
-//                String charString = constraint.toString().toLowerCase().trim();
-//                if (charString.isEmpty()) {
-//                    productListFiltered = productList; // Jika tidak ada kueri, tampilkan semua produk
-//                } else {
-//                    List<Product> filteredList = new ArrayList<>();
-//                    for (Product product : productList) {
-//                        // Filter berdasarkan kriteria yang diinginkan, misalnya nama produk
-//                        if (product.getName().toLowerCase().contains(charString)) {
-//                            filteredList.add(product);
-//                        }
-//                    }
-//                    productListFiltered = filteredList; // Mengupdate daftar produk yang difilter
-//                }
-//
-//                FilterResults filterResults = new FilterResults();
-//                filterResults.values = productListFiltered;
-//                return filterResults;
-//            }
-//
-//            @Override
-//            protected void publishResults(CharSequence constraint, FilterResults results) {
-//                productListFiltered = (List<Product>) results.values;
-//                notifyDataSetChanged(); // Memperbarui tampilan RecyclerView dengan daftar produk yang difilter
-//            }
-//        };
-//    }
 
     public class ProductViewHolder extends RecyclerView.ViewHolder {
         ImageView image;

@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.noloremstore.R;
-import com.example.noloremstore.model.Category;
 
 import java.util.List;
 
@@ -40,24 +39,9 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
     @Override
     public void onBindViewHolder(@NonNull CategoryViewHolder holder, @SuppressLint("RecyclerView") int position) {
-//        String category = categoryList.get(position);
-//        holder.categoryName.setText(category);
-//
-//        // Set listener klik pada ViewHolder
-//        holder.itemView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                // Panggil metode dari interface saat item diklik
-//                if (onCategoryClickListener != null) {
-//                    onCategoryClickListener.onCategoryClick(position);
-//                }
-//            }
-//        });
-
         String category = categoryList.get(position);
         holder.categoryName.setText(category);
         holder.itemView.setOnClickListener(v -> onCategoryClickListener.onCategoryClicked(category));
-
     }
 
     @Override
@@ -72,46 +56,5 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
             super(itemView);
             categoryName = itemView.findViewById(R.id.tv_kategori);
         }
-    }
-
-    // Konstruktor untuk adapter
-
-    // ViewHolder untuk RecyclerView
-//    public class CategoryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-//        private TextView categoryName;
-//
-//        public CategoryViewHolder(View itemView) {
-//            super(itemView);
-//            categoryName = itemView.findViewById(R.id.tv_kategori);
-//            itemView.setOnClickListener(this); // Set listener klik pada item
-//        }
-//
-//        @Override
-//        public void onClick(View v) {
-//
-//        }
-
-//        @Override
-//        public void onClick(View view) {
-//            // Panggil metode dari interface saat item diklik
-//            if (onCategoryClickListener != null) {
-//                int position = getAdapterPosition();
-//                if (position != RecyclerView.NO_POSITION) {
-//                    onCategoryClickListener.onCategoryClicked(category);
-//                }
-//            }
-//        }
-//    }
-
-    // Metode lainnya di sini
-
-    // Interface untuk mendengarkan klik pada item kategori
-//    public interface OnCategoryClickListener {
-//        void onCategoryClick(String category);
-//    }
-
-    // Metode untuk menetapkan listener
-    public void setOnCategoryClickListener(OnCategoryClickListener listener) {
-        this.onCategoryClickListener = listener;
     }
 }
