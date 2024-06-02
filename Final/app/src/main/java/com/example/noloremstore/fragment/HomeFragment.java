@@ -8,11 +8,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,7 +41,7 @@ public class HomeFragment extends Fragment {
 
     private TextView tv_no_data, tv_halo;
     private RecyclerView rv_searchProducts, rv_products;
-//    private SearchView searchView;
+    private ProgressBar progressBar;
     private androidx.appcompat.widget.SearchView searchView;
     private ProductAdapter productAdapter;
     private List<Product> product;
@@ -51,7 +53,7 @@ public class HomeFragment extends Fragment {
 
         tv_no_data = view.findViewById(R.id.tv_no_data);
         tv_halo = view.findViewById(R.id.tv_halo);
-//        tv_halo.setText();
+        progressBar = view.findViewById(R.id.progressBar);
 
         rv_searchProducts = view.findViewById(R.id.rv_searchProducts);
         product = new ArrayList<>();
@@ -63,7 +65,6 @@ public class HomeFragment extends Fragment {
         rv_products.setLayoutManager(new GridLayoutManager(getContext(), 2));
 
         searchView = view.findViewById(R.id.searchView);
-//        setSearchViewHintColor(searchView, Color.GRAY);
         searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -82,94 +83,22 @@ public class HomeFragment extends Fragment {
 
         SharedPreferences sharedUsername = getActivity().getSharedPreferences("username_pref", getContext().MODE_PRIVATE);
         String username = sharedUsername.getString("username", null);
-        tv_halo.setText("Halo, " + username + "!");
+        tv_halo.setText("Hello, " + username + "!");
 
+        progressBar.setVisibility(View.VISIBLE);
+        rv_products.setVisibility(View.GONE);
 
-//        fetchUserProfile();
-        fetchAllProducts();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                progressBar.setVisibility(View.GONE);
+                rv_products.setVisibility(View.VISIBLE);
+                fetchAllProducts();
+            }
+        }, 1000); // 2 seconds delay
 
         return view;
     }
-
-//    private void fetchUserProfile() {
-//        SharedPreferences sharedUserLogin = getActivity().getSharedPreferences("user_prefs", getContext().MODE_PRIVATE);
-//        SharedPreferences sharedUsername = getActivity().getSharedPreferences("username_pref", getContext().MODE_PRIVATE);
-//        String token = sharedUserLogin.getString("token", null);
-//        if (token != null) {
-//            int userId = getUserIdFromToken(token);
-//            if (userId != -1) {
-//                ApiService service = RetrofitClient.getClient().create(ApiService.class);
-//                Call<User> call = service.getUserData(userId);
-//                call.enqueue(new Callback<User>() {
-//                    @Override
-//                    public void onResponse(Call<User> call, Response<User> response) {
-//                        if (response.isSuccessful() && response.body() != null) {
-//                            User user = response.body();
-//                            Log.d("username", user.getUsername());
-//                            tv_halo.setText("Halo, " + user.getUsername() + "!");
-//                        } else {
-//                            Log.e("ProfileFragment", "Response not successful: " + response.code());
-//                            Toast.makeText(getContext(), "Failed to fetch user data", Toast.LENGTH_SHORT).show();
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<User> call, Throwable t) {
-//                        Log.e("ProfileFragment", "API call failed", t);
-//                        Toast.makeText(getContext(), "Failed to fetch user data", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//            }
-//        } else {
-//            Toast.makeText(getContext(), "Token not found", Toast.LENGTH_SHORT).show();
-//        }
-//    }
-//
-//    private int getUserIdFromToken(String token) {
-//        try {
-//            String[] split = token.split("\\.");
-//            String payload = new String(Base64.decode(split[1], Base64.URL_SAFE));
-//            JSONObject jsonObject = new JSONObject(payload);
-//            return jsonObject.getInt("userId");
-//        } catch (JSONException | ArrayIndexOutOfBoundsException e) {
-//            e.printStackTrace();
-//            return -1;
-//        }
-//    }
-
-//    private void fetchUserProfile() {
-//        ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
-//        Call<User> call = apiService.getUserData(userId);
-//        call.enqueue(new Callback<User>() {
-//            @Override
-//            public void onResponse(Call<User> call, Response<User> response) {
-//                if (response.isSuccessful() && response.body() != null) {
-//                    User user = response.body();
-//                    tv_halo.setText("Halo, " + user.getUsername() + "!");
-//                } else {
-//                    Toast.makeText(getContext(), "Failed to retrieve user profile", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<User> call, Throwable t) {
-//                Toast.makeText(getContext(), "An error occurred: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-//                Log.e("HomeFragment", "API call failed", t);
-//            }
-//        });
-//    }
-
-//    private void setSearchViewHintColor(SearchView searchView, int color) {
-//        int id = searchView.getContext().getResources().getIdentifier("Cari produk", null, null);
-//        TextView hintText = searchView.findViewById(id);
-//        hintText.setHintTextColor(color);
-//    }
-
-//    private void setSearchViewHintColor(androidx.appcompat.widget.SearchView searchView, int color) {
-//        int id = searchView.getContext().getResources().getIdentifier("Cari produk", null, null);
-//        TextView hintText = searchView.findViewById(id);
-//        hintText.setHintTextColor(color);
-//    }
 
     private void fetchAllProducts() {
         ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
@@ -190,7 +119,8 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<Product>> call, Throwable t) {
-                Toast.makeText(getContext(), "An error occurred: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(), "An error occurred: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "No Internet Connection", Toast.LENGTH_SHORT).show();
                 Log.e("HomeFragment", "API call failed", t);
             }
         });

@@ -81,14 +81,8 @@ public class LoginActivity extends AppCompatActivity {
                     Log.d("LoginActivity", "Response body: " + response.body());
                     Log.d("LoginActivity", "Token: " + token);
 
-                    // Misalnya, setelah verifikasi kredensial pengguna dan login berhasil:
-//                    SharedPreferences sharedPreferences = getSharedPreferences("LoginPrefs", MODE_PRIVATE);
-//                    SharedPreferences.Editor editor = sharedPreferences.edit();
-//                    editor.putBoolean("isLoggedIn", true);
-//                    editor.apply(); // Terapkan perubahan
-
-                    saveToken(token);
                     saveUsername(username);
+                    saveToken(token);
                     navigateToHome();
                 } else {
                     Toast.makeText(LoginActivity.this, "Invalid username or password", Toast.LENGTH_SHORT).show();
@@ -97,7 +91,8 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<TokenResponse> call, Throwable t) {
-                Toast.makeText(LoginActivity.this, "An error occurred: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "No Internet Connection", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(LoginActivity.this, "An error occurred: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -118,8 +113,6 @@ public class LoginActivity extends AppCompatActivity {
         editor.putString("username", username);
         editor.apply();
     }
-
-
 
     private void navigateToHome() {
         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);

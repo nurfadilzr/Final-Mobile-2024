@@ -23,7 +23,7 @@ import retrofit2.Response;
 
 public class DBConfig extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "db_final";
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 6;
     private static final String TABLE_NAME = "cart";
     private static final String COLUMN_ID = "id";
     private static final String COLUMN_IMAGE = "image";
@@ -45,41 +45,7 @@ public class DBConfig extends SQLiteOpenHelper {
                 + COLUMN_QUANTITY + " INTEGER)");
     }
 
-//    public void insertData(final int productId) {
-//        // Tembak API ambil produk per id
-//        ApiService service = RetrofitClient.getClient().create(ApiService.class);
-//        Call<Product> call = service.getProductDetails(productId);
-//
-//        call.enqueue(new Callback<Product>() {
-//            @Override
-//            public void onResponse(Call<Product> call, Response<Product> response) {
-//                if (response.isSuccessful() && response.body() != null) {
-//                    Product product = response.body();
-//
-//                    SQLiteDatabase db = getWritableDatabase();
-//                    ContentValues values = new ContentValues();
-//
-//                    values.put(COLUMN_IMAGE, product.getImage());
-//                    values.put(COLUMN_TITLE, product.getTitle());
-//                    values.put(COLUMN_PRICE, product.getPrice());
-//                    values.put(COLUMN_QUANTITY, 1); // Set default quantity to 1
-//                    db.insert(TABLE_NAME, null, values);
-//                    db.close();
-//                } else {
-//                    Log.e("DBConfig", "Failed to fetch product data from API: " + response.code());
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<Product> call, Throwable t) {
-//                Log.e("DBConfig", "API call failed", t);
-//            }
-//        });
-//    }
-
     public List<Cart> getAllCarts() {
-//        SQLiteDatabase db = getReadableDatabase();
-//        return db.query(TABLE_NAME, null, null, null, null, null, null);
         List<Cart> cartList = new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
@@ -92,6 +58,8 @@ public class DBConfig extends SQLiteOpenHelper {
                 cart.setPrice(cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_PRICE)));
                 cart.setQuantity(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_QUANTITY)));
                 cartList.add(cart);
+
+                Log.d("DBConfig", "Retrieved cart item: " + cart.toString());
             } while (cursor.moveToNext());
         }
         cursor.close();
@@ -105,27 +73,16 @@ public class DBConfig extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-//    public boolean addToCart(int productId, String productImage, String productName, double productPrice, int quantity) {
-//        SQLiteDatabase db = this.getWritableDatabase();
-//        ContentValues values = new ContentValues();
-//        values.put(COLUMN_ID, productId);
-//        values.put(COLUMN_TITLE, productName);
-//        values.put(COLUMN_IMAGE, productImage);
-//        values.put(COLUMN_PRICE, productPrice);
-//        values.put(COLUMN_QUANTITY, quantity);
-//
-//        long result = db.insert(TABLE_NAME, null, values);
-//        db.close();
-//        return result != -1;
-//    }
-    public boolean addToCart(int productId, String productImage, String productName, double productPrice, int quantity) {
+    public boolean addToCart(int productId, String productImage, String productName, double productPrice, int productQuantity) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_ID, productId);
         values.put(COLUMN_IMAGE, productImage);
         values.put(COLUMN_TITLE, productName);
         values.put(COLUMN_PRICE, productPrice);
-        values.put(COLUMN_QUANTITY, quantity);
+        values.put(COLUMN_QUANTITY, productQuantity);
+
+        Log.d("DBConfig", "Adding to cart: " + values.toString());
 
         long result = db.insert("cart", null, values);
         db.close();

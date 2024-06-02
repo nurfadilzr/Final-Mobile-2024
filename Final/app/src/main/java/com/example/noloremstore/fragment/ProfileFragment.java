@@ -100,7 +100,8 @@ public class ProfileFragment extends Fragment {
                     @Override
                     public void onFailure(Call<User> call, Throwable t) {
                         Log.e("ProfileFragment", "API call failed", t);
-                        Toast.makeText(getContext(), "Failed to fetch user data", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getContext(), "Failed to fetch user data", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "No Internet Connection", Toast.LENGTH_SHORT).show();
                     }
                 });
             } else {
